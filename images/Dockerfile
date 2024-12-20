@@ -9,5 +9,6 @@ RUN npm install
 
 COPY tsconfig.json tsconfig.json
 COPY src src
+COPY clean.js clean.js
 
 CMD npm start

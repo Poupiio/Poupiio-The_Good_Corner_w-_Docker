@@ -10,7 +10,7 @@ type FormValues = {
    description: string,
    category: string,
    price: number,
-   pictures: {url: string}[];
+   pictures: { url: string }[];
    location: string,
    tags: string[],
    __typename?: string;
@@ -29,7 +29,7 @@ const EditAd = () => {
    const { register, handleSubmit, control, formState: { errors }, setValue, getValues, watch } = useForm<FormValues>({defaultValues: {
       title: data?.getAdById.title,
       description: data?.getAdById.description,
-      // category: data?.getAdById.category.name,
+      category: data?.getAdById.category.name,
       price: data?.getAdById.price,
       pictures: data?.getAdById?.pictures?.map((pic) => ({ url: pic.url })),
       location: data?.getAdById.location,
@@ -90,7 +90,7 @@ const EditAd = () => {
                   <textarea className="text-field" {...register("description")} id="description" placeholder="Description..." defaultValue={data.getAdById.description}></textarea>
                </label>
                
-               <select className="text-field" {...register("category", { required: true })} id="category">
+               <select className="text-field" {...register("category", { required: true })} id="category" defaultValue={data.getAdById.category.name}>
                   {data.getAllCategories.map((category: Category) => (
                      <option value={category.id} key={category.id}>{category.name}</option>
                   ))}

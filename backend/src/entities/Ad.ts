@@ -31,6 +31,7 @@ export class Ad extends BaseEntity {
    @OneToMany(() => Picture, (picture) => picture.ad, {
       cascade: true,
       eager: true,
+      onDelete: "CASCADE"
    })
    pictures: Picture[];
    
