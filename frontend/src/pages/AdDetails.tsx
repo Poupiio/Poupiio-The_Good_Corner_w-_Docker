@@ -33,7 +33,9 @@ const AdDetails = () => {
       <>
          <section className="ad-details">
             <div className="ad-details-image-container">
-               <img className="ad-details-image" src={data.getAdById.pictures[0]?.url} key={data.getAdById.pictures[0]?.id} />
+               {data.getAdById.pictures.map((img: any) => (
+                  <img key={img.id} src={img.url} />
+               ))}
             </div>
             <h2 className="ad-details-title">{data.getAdById.title}</h2>
             <div className="ad-card-category">

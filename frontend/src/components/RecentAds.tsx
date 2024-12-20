@@ -27,8 +27,7 @@ const RecentAds = () => {
                         />
                      </div>
                   )
-               }
-               )}
+               })}
             </section>
          </>
       );

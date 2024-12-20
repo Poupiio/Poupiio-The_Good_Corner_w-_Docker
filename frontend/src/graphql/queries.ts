@@ -35,6 +35,7 @@ export const GET_AD_BY_ID = gql`
          owner
          price
          pictures {
+            id
             url
          }
          location

@@ -3,6 +3,7 @@ import { useForm, SubmitHandler, useFieldArray } from "react-hook-form"
 import { toast } from "react-toastify";
 import { Category, Tag, useCreateNewAdMutation, useGetAllCategoriesAndTagsQuery } from '../generated/graphql-types';
 import { GET_ALL_ADS } from '../graphql/queries';
+import axios from "axios";
 
 export type FormValues = {
    title: string
@@ -24,7 +25,7 @@ const CreateAd = () => {
       refetchQueries: [GET_ALL_ADS]
    });
 
-   const { register, handleSubmit, control, formState: { errors }  } = useForm<FormValues>({defaultValues: {
+   const { register, handleSubmit, control, formState: { errors }, setValue } = useForm<FormValues>({defaultValues: {
       title: "Titre de mon annonce",
       description: "Description de mon annonce",
       category: "6",
@@ -93,12 +94,34 @@ const CreateAd = () => {
             
             <div className="images-container">
                <label htmlFor="pictures">Souhaitez-vous ajouter des images ?</label>
-               <button className="button add-image" type="button" onClick={() => append({ url: "" })}>Ajouter</button>
+               <button className="button add-image" type="button" onClick={() => append({ url: "" })}>+</button>
                <div className="field">
                   {fields.map((field, index) => {
                      return (
                         <div key={field.id}>
                            <section className="image-input-and-remove">
+                              <input
+                                 id="file"
+                                 type="file"
+                                 onChange={async (
+                                 e: React.ChangeEvent<HTMLInputElement>
+                                 ) => {
+                                 if (e.target.files) {
+                                    const formData = new FormData();
+                                    formData.append("file", e.target.files[0]);
+
+                                    try {
+                                       const result = await axios.post("/img", formData);
+                                       setValue(
+                                       `pictures.${index}.url`,
+                                       result.data.filename
+                                       );
+                                    } catch (error) {
+                                       console.error(error);
+                                    }
+                                 }
+                                 }}
+                              />
                               <input
                                  className="text-field"
                                  placeholder="Entrez l'URL de votre image"

@@ -112,7 +112,7 @@ h1 {
 }
  
 .main-content {
-  max-width: 1100px;
+  max-width: 1300px;
   padding: 0 16px;
   margin: 25vh auto 48px;
 }
@@ -220,8 +220,8 @@ h1 {
 }
 
 .ad-details-image-container {
-  height: 250px;
-  overflow: hidden;
+  display: flex;
+  height: auto;
   margin-top: 50px;
 }
  
@@ -318,6 +318,12 @@ h1 {
 .images-container .add-image {
   margin: 10px 0;
 }
+.images {
+  display: flex;
+}
+.images img {
+  height: 150px;
+}
 
 .create-ad {
   width: fit-content;
@@ -342,6 +348,11 @@ h1 {
   .ad-details-image-container {
     margin-inline-start: unset;
     margin-inline-end: unset;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .ad-details-image-container img {
+    height: 200px;
   }
  
   .ad-details {

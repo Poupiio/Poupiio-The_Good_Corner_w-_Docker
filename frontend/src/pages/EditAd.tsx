@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Category, Tag, useGetAdByIdAndAllCategoriesAndTagsQuery, useUpdateAdMutation } from "../generated/graphql-types";
+import axios from "axios";
 
 
 type FormValues = {
@@ -9,7 +10,7 @@ type FormValues = {
    description: string,
    category: string,
    price: number,
-   pictures: { url: string; __typename?: string }[];
+   pictures: {url: string}[];
    location: string,
    tags: string[],
    __typename?: string;
@@ -25,14 +26,16 @@ const EditAd = () => {
 
    const [updateAd] = useUpdateAdMutation();
 
-   const { register, handleSubmit, control, formState: { errors } } = useForm<FormValues>({defaultValues: {
+   const { register, handleSubmit, control, formState: { errors }, setValue, getValues, watch } = useForm<FormValues>({defaultValues: {
       title: data?.getAdById.title,
       description: data?.getAdById.description,
       // category: data?.getAdById.category.name,
       price: data?.getAdById.price,
-      // pictures: data?.getAdById.pictures?.url,
+      pictures: data?.getAdById?.pictures?.map((pic) => ({ url: pic.url })),
       location: data?.getAdById.location,
    }});
+
+   watch("pictures");
 
    const { fields, append, remove } = useFieldArray({
       control,
@@ -54,9 +57,7 @@ const EditAd = () => {
             pictures: formData.pictures.map((pic) => {
                return { url: pic.url };
             }),
-            tags: formData.tags.map((tagId) => ({
-               id: parseInt(tagId)
-            })),
+            tags: formData.tags ? formData.tags.map((tagID) => ({ id: parseInt(tagID) })) : [],
             id: parseInt(id as string),
             price: Number(formData.price),
             category: formData.category
@@ -100,17 +101,44 @@ const EditAd = () => {
                </label>
                
                <div className="images-container">
-                  <label htmlFor="pictures">Souhaitez-vous ajouter des images ?</label>
-                  <button className="button add-image" type="button" onClick={() => append({ url: "" })}>Ajouter</button>
-                  <div className="field">
+                  <label htmlFor="pictures">Modifier les images</label>
+                  <button className="button add-image" type="button" onClick={() => append({ url: "" })}>+</button>
+                  <div className="field images">
                      {fields.map((field, index) => {
                         return (
                            <div key={field.id}>
                               <section className="image-input-and-remove">
+                                 {getValues(`pictures.${index}.url`) ? (
+                                    <img src={getValues(`pictures.${index}.url`)} />
+                                 ) : (
+                                 <input
+                                    id="file"
+                                    type="file"
+                                    onChange={async (
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                    ) => {
+                                    if (e.target.files) {
+                                       const formData = new FormData();
+                                       formData.append("file", e.target.files[0]);
+
+                                       try {
+                                          const result = await axios.post("/img", formData);
+                                          setValue(
+                                          `pictures.${index}.url`,
+                                          result.data.filename
+                                          );
+                                       } catch (error) {
+                                          console.error(error);
+                                       }
+                                    }
+                                    }}
+                                 />
+                                 )}
                                  <input
                                     className="text-field"
                                     placeholder="Entrez l'URL de votre image"
                                     {...register(`pictures.${index}.url` as const)}
+                                    type="hidden"
                                  />
                                  <button className="button" onClick={() => remove(index)}>Supprimer</button>
                               </section>
