@@ -51,3 +51,12 @@ services:
         condition: service_healthy
     ports:
       - 9000:80
+  img:
+    build: ./images
+    healthcheck:
+      test: "curl --fail --request GET --url 'http://localhost:4000' || exit 1"
+      interval: 1s
+      timeout: 2s
+      retries: 100
+    volumes:
+      - ./images/uploads:/app/uploads
