@@ -57,6 +57,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createNewAd: Ad;
   createNewCategory: Category;
+  register: Scalars['String']['output'];
   removeAd: Scalars['String']['output'];
   removeCategory: Scalars['String']['output'];
   updateAd: Ad;
@@ -71,6 +72,11 @@ export type MutationCreateNewAdArgs = {
 
 export type MutationCreateNewCategoryArgs = {
   data: CategoryInput;
+};
+
+
+export type MutationRegisterArgs = {
+  data: UserInput;
 };
 
 
@@ -157,6 +163,11 @@ export type UpdateAdInput = {
   price?: InputMaybe<Scalars['Float']['input']>;
   tags?: InputMaybe<Array<TagInput>>;
   title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UserInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type CreateNewAdMutationVariables = Exact<{
