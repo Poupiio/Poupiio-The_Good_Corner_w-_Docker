@@ -1,8 +1,11 @@
+import { toast } from "react-toastify";
 import { useLoginLazyQuery  } from "../generated/graphql-types";
 import { SubmitHandler, useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
    const [login] = useLoginLazyQuery();
+   const navigate = useNavigate();
    type Inputs = {
       login: string
       password: string
@@ -29,20 +32,22 @@ const Login = () => {
             console.log("error", error);
          },
       });
-   };
-    
+      toast.success("User connected!");
+      navigate("/");
+   }
+
    return (
       <>
          <h1>Connexion</h1>
             
          <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="login">Votre email
-               <input className="text-field" placeholder="monemail@gmail.com" {...register("login", { required: true })} />
+               <input className="text-field" type="email" placeholder="monemail@gmail.com" {...register("login", { required: true })} />
                {errors.login && <span>Ce champ est requis.</span>}
             </label>
 
             <label htmlFor="password">Votre mot de passe
-               <input className="text-field" {...register("password", { required: true })} />
+               <input className="text-field" type="password" {...register("password", { required: true })} />
                {errors.password && <span>Ce champ est requis.</span>}
             </label>
 

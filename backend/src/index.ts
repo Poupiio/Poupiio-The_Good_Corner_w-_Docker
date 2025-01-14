@@ -9,6 +9,7 @@ import { CategoryResolver } from "./resolvers/CategoryResolver";
 import { PictureResolver } from "./resolvers/PictureResolver";
 import { TagResolver } from "./resolvers/TagResolver";
 import UserResolver from "./resolvers/UserResolver";
+import jwt, { Secret } from "jsonwebtoken";
 
 const start = async () => {
   if (process.env.JWT_SECRET_KEY === undefined || process.env.JWT_SECRET_KEY === null) {
@@ -24,6 +25,18 @@ const start = async () => {
   
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
+    context: async ({ req }) => {
+      const token = req.headers.authorization?.split("Bearer ")[1];
+      if (token) {
+        const payload = jwt.verify(token, process.env.JWT_SECRET_KEY as Secret);
+        console.log("payload in context", payload);
+        if (payload) {
+          console.log("payload was found and returned to resolver");
+          return payload;
+        }
+      }
+      return {};
+    },
   });
   
   console.log(`🚀  Server ready at: ${url}`);

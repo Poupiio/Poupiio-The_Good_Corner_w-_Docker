@@ -1,6 +1,6 @@
 import AdInput from "../inputs/AdInput";
 import { Ad } from "../entities/Ad";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import UpdateAdInput from "../inputs/UpdateAdInput";
 
 @Resolver(Ad)
@@ -32,7 +32,8 @@ export class AdResolver {
    }
 
    @Mutation(() => Ad)
-   async createNewAd(@Arg("data") newData: AdInput) {
+   async createNewAd(@Arg("data") newData: AdInput, @Ctx() context: any) {
+      console.log("context of create new ad mutation", context);
       const newAd = Ad.create({ 
          ...newData
       });
