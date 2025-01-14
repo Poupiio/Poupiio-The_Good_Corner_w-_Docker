@@ -120,6 +120,7 @@ export type Query = {
   getCategoryById: Category;
   getPictureById: Picture;
   getTagById: Tag;
+  login: Scalars['String']['output'];
 };
 
 
@@ -140,6 +141,11 @@ export type QueryGetPictureByIdArgs = {
 
 export type QueryGetTagByIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryLoginArgs = {
+  data: UserInput;
 };
 
 export type Tag = {
