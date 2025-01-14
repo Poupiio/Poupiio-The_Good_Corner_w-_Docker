@@ -91,3 +91,9 @@ export const GET_AD_BY_ID_AND_CATEGORIES_AND_TAGS = gql`
       }
   }
 `;
+
+export const LOGIN = gql`
+   query Login($data: UserInput!) {
+      login(data: $data)
+   }
+`;

@@ -26,6 +26,8 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import CategoryPage from "./pages/CategoryPage";
 import CreateAd from "./pages/CreateAd";
 import FileUpload from "./pages/FileUpload";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
 	return (
@@ -55,6 +57,8 @@ function App() {
 					<Route path="ad/category/:name" element={<AdsByCategory />} /> */}
 					<Route path="/ad/category/:categoryName" element={<CategoryPage />} />
 					<Route path="images" element={<FileUpload /> } />
+					<Route path="login" element={<Login /> } />
+					<Route path="register" element={<Register /> } />
 				</Route>
 			</Routes>
 			<ToastContainer theme="colored" />
