@@ -3,6 +3,7 @@ import { Field, ObjectType } from 'type-graphql';
 import { Category } from "./Category";
 import { Tag } from "./Tag";
 import { Picture } from "./Picture";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -18,11 +19,7 @@ export class Ad extends BaseEntity {
    @Field()
    @Column({ nullable: true })
    description?: string;
-   
-   @Field()
-   @Column()
-   owner: string;
-   
+
    @Field()
    @Column()
    price: number;
@@ -59,4 +56,10 @@ export class Ad extends BaseEntity {
    @JoinTable()
    // @JoinTable obligatoire sur Ad ou Tag => définit la création de la table de jointure
    tags?: Tag[];
+
+   @Field(() => User)
+   @ManyToOne(
+      () => User, user => user.ads, { eager: true }
+   )
+   user: User;
 }

@@ -1,5 +1,6 @@
 import "dotenv/config";
 import "reflect-metadata";
+import * as cookie from "cookie";
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { buildSchema } from 'type-graphql';
@@ -19,23 +20,37 @@ const start = async () => {
   
   const schema = await buildSchema({
     resolvers: [AdResolver, CategoryResolver, PictureResolver, TagResolver, UserResolver],
+    // On checke si un user est connecté pour lui donner les droits d'accès
+    authChecker: ({ context }) => {
+      if (context.email) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   });
   
   const server = new ApolloServer({ schema });
   
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
-    context: async ({ req }) => {
-      const token = req.headers.authorization?.split("Bearer ")[1];
-      if (token) {
-        const payload = jwt.verify(token, process.env.JWT_SECRET_KEY as Secret);
-        console.log("payload in context", payload);
-        if (payload) {
-          console.log("payload was found and returned to resolver");
-          return payload;
+    context: async ({ req, res }) => {
+      if (req.headers.cookie) {
+        const cookies = cookie.parse(req.headers.cookie as string);
+        if (cookies.token) {
+          const payload: any = jwt.verify(
+            cookies.token,
+            process.env.JWT_SECRET_KEY as Secret
+          );
+          console.log("payload in context", payload);
+          if (payload) {
+            console.log("payload was found and returned to resolver");
+            return { email: payload.email, res: res };
+          }
         }
+
       }
-      return {};
+      return { res: res};
     },
   });
   

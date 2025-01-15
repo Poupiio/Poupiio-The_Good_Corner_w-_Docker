@@ -18,29 +18,26 @@ export class TagInput {
 
 @InputType()
 class AdInput implements Partial<Ad> {
-   @Field()
-   title: string;
+  @Field()
+  title: string;
 
-   @Field()
-   description?: string;
+  @Field()
+  description?: string;
 
-   @Field()
-   owner: string;
-   
-   @Field()
-   price: number;
+  @Field()
+  price: number;
 
-   @Field()
-   location: string;
+  @Field()
+  location: string;
 
-   @Field(() => ID)
-   category: Category;
+  @Field(() => ID)
+  category: Category;
 
-   @Field(() => [PictureInput], { nullable: true })
-   pictures?: Picture[];
+  @Field(() => [PictureInput], { nullable: true })
+  pictures?: Picture[];
 
-   @Field(() => [TagInput], { nullable: true })
-   tags?: Tag[];
+  @Field(() => [TagInput], { nullable: true })
+  tags?: Tag[];
 }
 
 export default AdInput;

@@ -14,7 +14,6 @@ export const UPDATE_AD = gql`
          id
          title
          description
-         owner
          price
          location
          createdAt

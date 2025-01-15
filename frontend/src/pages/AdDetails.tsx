@@ -28,6 +28,8 @@ const AdDetails = () => {
       });
       navigate("/");
    };
+   console.log("test", data.getAdById.user.email);
+   
 
    return (
       <>
@@ -56,13 +58,13 @@ const AdDetails = () => {
                   <i className="fa-solid fa-location-dot"></i>{data.getAdById.location}</div>
                <hr className="separator" />
                <div className="ad-details-owner">
-                  Annoncée publiée par <b>{data.getAdById.owner}</b>, le {data.getAdById.createdAt && new Date(data.getAdById.createdAt).toLocaleDateString("fr-FR", {
+                  Annoncée publiée par <b>{data.getAdById.user.email}</b>, le {data.getAdById.createdAt && new Date(data.getAdById.createdAt).toLocaleDateString("fr-FR", {
                         year: "numeric",
                         month: "long",
                         day: "numeric"
                      })}.
                </div>
-               <a href={`mailto:${data.getAdById.owner}`} className="button button-primary link-button mailBtn">
+               <a href={`mailto:${data.getAdById.user.email}`} className="button button-primary link-button mailBtn">
                   <i className="fa-regular fa-envelope"></i>Envoyer un email
                </a>
             </div>

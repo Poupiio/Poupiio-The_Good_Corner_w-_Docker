@@ -53,6 +53,7 @@ const Header = () => {
                <span className="mobile-short-label">Publier</span>
                <span className="desktop-long-label">Publier une annonce</span>
             </Link>
+            <Link to="/login" className="button link-button">Se connecter</Link>
          </div>
          <nav className="categories-navigation">
             {data.getAllCategories.map((cat: any) => (

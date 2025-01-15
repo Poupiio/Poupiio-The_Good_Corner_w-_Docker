@@ -1,7 +1,8 @@
 import AdInput from "../inputs/AdInput";
 import { Ad } from "../entities/Ad";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import UpdateAdInput from "../inputs/UpdateAdInput";
+import { User } from "../entities/User";
 
 @Resolver(Ad)
 export class AdResolver {
@@ -31,23 +32,30 @@ export class AdResolver {
       return ad;
    }
 
+   @Authorized()
    @Mutation(() => Ad)
    async createNewAd(@Arg("data") newData: AdInput, @Ctx() context: any) {
       console.log("context of create new ad mutation", context);
+      const userFromContext = await User.findOneByOrFail({
+         email: context.email,
+      });
       const newAd = Ad.create({ 
-         ...newData
+         ...newData,
+         user: userFromContext,
       });
 
       const adToSave = await newAd.save();
       return adToSave;
    }
 
+   @Authorized()
    @Mutation(() => String)
    async removeAd(@Arg("id") id: number) {
       await Ad.delete(id);
       return "The ad has been successfully deleted!";
    }
 
+   @Authorized()
    @Mutation(() => Ad)
    async updateAd(@Arg("data") dataToUpdate: UpdateAdInput) {
       let adToUpdate = await Ad.findOneByOrFail({ id: dataToUpdate.id });

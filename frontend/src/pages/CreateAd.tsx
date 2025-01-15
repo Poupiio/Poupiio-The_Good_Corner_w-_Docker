@@ -13,7 +13,6 @@ export type FormValues = {
    pictures: { url: string }[],
    location: string,
    tags: string[],
-   owner: string
 }
 
 const CreateAd = () => {
@@ -36,7 +35,6 @@ const CreateAd = () => {
          },
       ],
       location: "Ma ville",
-      owner: "C'est moi"
    }});
 
    const { fields, append, remove } = useFieldArray({
@@ -149,10 +147,6 @@ const CreateAd = () => {
                ))}
             </div>
 
-            <label htmlFor="owner">Vendeur
-               <input className="text-field" type="text" {...register("owner", { required: true })} placeholder="Votre nom" />
-            </label>
-            
             <button className="button create-ad" type="submit">Créer</button>
          </form>
       );

@@ -6,7 +6,6 @@ export const GET_ALL_ADS = gql`
          id
          title
          description
-         owner
          price
          location
          createdAt
@@ -22,6 +21,9 @@ export const GET_ALL_ADS = gql`
             id
             name
          }
+         user {
+            email
+         }
       }
    }
 `;
@@ -32,7 +34,9 @@ export const GET_AD_BY_ID = gql`
          id
          title
          description
-         owner
+         user {
+            email
+         }
          price
          pictures {
             id

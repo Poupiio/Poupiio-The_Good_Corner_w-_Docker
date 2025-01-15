@@ -24,16 +24,14 @@ const Login = () => {
                password: data.password
             }
          },
-         onCompleted: (result) => {
-            console.log("result", result);
-            localStorage.setItem("token", result.login);
+         onCompleted: () => {
+            toast.success("Ravi de vous revoir !");
+            navigate("/");
          },
          onError: (error) => {
             console.log("error", error);
          },
       });
-      toast.success("User connected!");
-      navigate("/");
    }
 
    return (

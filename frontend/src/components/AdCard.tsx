@@ -6,7 +6,7 @@ import { GET_ALL_ADS } from "../graphql/queries";
 
 const AdCard = ({ id, title, pictures, category, price, tags }: Ad) => {
    const navigate = useNavigate();
-
+   
    const goToAdDetails = () => {
       navigate(`/ad/${id}`);
    };

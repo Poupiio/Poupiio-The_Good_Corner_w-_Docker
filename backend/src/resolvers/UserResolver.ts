@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import * as argon2 from "argon2";
 import jwt, { Secret } from "jsonwebtoken";
 import { User } from "../entities/User";
@@ -17,7 +17,7 @@ class UserResolver {
    }
 
    @Query(() => String)
-   async login(@Arg("data") loginUserdata: UserInput) {
+   async login(@Arg("data") loginUserdata: UserInput, @Ctx() context: any) {
       let isPasswordCorrect = false;
       // On récupère l'utilisateur via son email s'il existe
       // "findOneByOrFail" nous renverrait comme erreur que l'email n'est pas bon, pour des raisons de sécurité, on utilise findOneBy
@@ -31,8 +31,10 @@ class UserResolver {
             1. Les éléments du payload (exemple : email, role, etc)
             2. La clé secrète (stockée dans un fichier .env pour plus de sécurité)
          */
-         const token = jwt.sign({email: user.email}, process.env.JWT_SECRET_KEY as Secret)
-         return token;
+         const token = jwt.sign({email: user.email}, process.env.JWT_SECRET_KEY as Secret);
+         // Stockage du token dans les cookies
+         context.res.setHeader("Set-Cookie", `token=${token}; Secure; HttpOnly`);
+         return "ok";
       } else {
          throw new Error('Incorrect login');
       }

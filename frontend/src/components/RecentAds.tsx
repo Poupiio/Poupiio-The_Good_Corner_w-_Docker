@@ -1,4 +1,4 @@
-import { Ad, useGetAllAdsQuery } from '../generated/graphql-types';
+import { useGetAllAdsQuery } from '../generated/graphql-types';
 import AdCard from './AdCard';
 
 const RecentAds = () => {
@@ -10,13 +10,14 @@ const RecentAds = () => {
          <>
             <h2>Annonces récentes</h2>
             <section className="recent-ads">
-               {data.getAllAds.map((ad: Ad) => {
+               {data.getAllAds.map(ad => {
+                  console.log("get all ads", data.getAllAds);
+                  
                   return (
                      <div key={ad.id}>
                         <AdCard 
                            id={ad.id}
                            title={ad.title}
-                           owner={ad.owner}
                            description={ad.description}
                            pictures={ad.pictures}
                            category={ad.category}
@@ -24,6 +25,7 @@ const RecentAds = () => {
                            price={ad.price}
                            createdAt={ad.createdAt}
                            tags={ad.tags}
+                           user={ad.user}
                         />
                      </div>
                   )
