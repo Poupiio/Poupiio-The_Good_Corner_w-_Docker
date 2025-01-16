@@ -3,12 +3,12 @@ import Header from "../components/Header";
 import { useState } from "react";
 
 const Layout = () => {
-   const [showLogin, setShowLogin] = useState(false);
-   console.log(showLogin);
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+   console.log("connecté ou pas", isLoggedIn);
    
    return (
       <main className="main-content">
-         <Header setShowLogin={setShowLogin} />
+         <Header setIsLoggedIn={setIsLoggedIn} />
          {/* Outlet sert à changer dynamiquement la page par rapport à ce qui est entré dans l'URL */}
          <Outlet />
       </main>

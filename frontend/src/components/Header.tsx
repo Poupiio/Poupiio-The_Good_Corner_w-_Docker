@@ -4,17 +4,15 @@ import Category from "./Category";
 import { useGetAllCategoriesAndUserInfoQuery } from "../generated/graphql-types";
 
 const Header = ({
-   setShowLogin,
+   setIsLoggedIn,
    } : {
-      setShowLogin: React.Dispatch<React.SetStateAction<boolean>>;
+      setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
    }) => {
    const navigate = useNavigate();
 
    const { loading, error, data } = useGetAllCategoriesAndUserInfoQuery();
    if (loading) return <p>Loading...</p>;
    if (error) return <p>Error : {error.message}</p>;
-
-   console.log(data?.getUserInfo.isLoggedIn);
    
    return (
       <header className="header">
@@ -67,7 +65,7 @@ const Header = ({
                   <button
                      className="button link-button"
                      onClick={() => {
-                        setShowLogin(false);
+                        setIsLoggedIn(false);
                         navigate("/");
                      }}
                   >Déconnexion</button>
