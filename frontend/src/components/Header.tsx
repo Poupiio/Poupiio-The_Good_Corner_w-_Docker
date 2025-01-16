@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Category from "./Category";
 import { useGetAllCategoriesAndUserInfoQuery, useLogoutMutation } from "../generated/graphql-types";
 import { GET_USER_INFO } from "../graphql/queries";
+import { toast } from "react-toastify";
 
 const Header = ({
    setIsLoggedIn,
@@ -70,6 +71,7 @@ const Header = ({
                      className="button link-button"
                      onClick={() => {
                         logout();
+                        toast.success("Vous avez été déconnecté. À bientôt !")
                         setIsLoggedIn(false);
                         navigate("/");
                      }}
