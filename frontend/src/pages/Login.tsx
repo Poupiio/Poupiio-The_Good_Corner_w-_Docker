@@ -49,7 +49,7 @@ const Login = () => {
                {errors.password && <span>Ce champ est requis.</span>}
             </label>
 
-            <button className="button" type="submit">Se connecter</button>
+            <button className="button" type="submit">Connexion</button>
          </form>
       </>
    );
