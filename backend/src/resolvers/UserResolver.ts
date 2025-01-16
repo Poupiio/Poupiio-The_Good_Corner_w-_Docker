@@ -22,7 +22,7 @@ class UserResolver {
          hashedPassword: await argon2.hash(newUserData.password),
       });
       console.log("result", result);
-      return "ok";
+      return "User registered.";
    }
 
    @Mutation(() => String)
@@ -43,10 +43,19 @@ class UserResolver {
          const token = jwt.sign({email: user.email}, process.env.JWT_SECRET_KEY as Secret);
          // Stockage du token dans les cookies
          context.res.setHeader("Set-Cookie", `token=${token}; Secure; HttpOnly`);
-         return "ok";
+         return "User logged in.";
       } else {
          throw new Error('Incorrect login');
       }
+   }
+
+   @Mutation(() => String)
+   async logout(@Ctx() context: any) {
+      context.res.setHeader(
+         "Set-Cookie",
+         `token=; Secure; HttpOnly;expires=${new Date(Date.now()).toUTCString()}`
+      );
+      return "User logged out.";
    }
 
    @Query(() => UserInfo)

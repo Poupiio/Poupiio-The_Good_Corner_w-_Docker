@@ -1,7 +1,8 @@
 // import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Category from "./Category";
-import { useGetAllCategoriesAndUserInfoQuery } from "../generated/graphql-types";
+import { useGetAllCategoriesAndUserInfoQuery, useLogoutMutation } from "../generated/graphql-types";
+import { GET_USER_INFO } from "../graphql/queries";
 
 const Header = ({
    setIsLoggedIn,
@@ -9,6 +10,9 @@ const Header = ({
       setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
    }) => {
    const navigate = useNavigate();
+   const [logout] = useLogoutMutation({
+      refetchQueries: [{ query: GET_USER_INFO }],
+   });
 
    const { loading, error, data } = useGetAllCategoriesAndUserInfoQuery();
    if (loading) return <p>Loading...</p>;
@@ -65,6 +69,7 @@ const Header = ({
                   <button
                      className="button link-button"
                      onClick={() => {
+                        logout();
                         setIsLoggedIn(false);
                         navigate("/");
                      }}
