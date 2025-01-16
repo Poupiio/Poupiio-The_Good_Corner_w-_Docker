@@ -56,6 +56,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createNewAd: Ad;
   createNewCategory: Category;
+  login: Scalars['String']['output'];
   register: Scalars['String']['output'];
   removeAd: Scalars['String']['output'];
   removeCategory: Scalars['String']['output'];
@@ -71,6 +72,11 @@ export type MutationCreateNewAdArgs = {
 
 export type MutationCreateNewCategoryArgs = {
   data: CategoryInput;
+};
+
+
+export type MutationLoginArgs = {
+  data: UserInput;
 };
 
 
@@ -119,7 +125,7 @@ export type Query = {
   getCategoryById: Category;
   getPictureById: Picture;
   getTagById: Tag;
-  login: Scalars['String']['output'];
+  getUserInfo: UserInfo;
 };
 
 
@@ -140,11 +146,6 @@ export type QueryGetPictureByIdArgs = {
 
 export type QueryGetTagByIdArgs = {
   id: Scalars['Float']['input'];
-};
-
-
-export type QueryLoginArgs = {
-  data: UserInput;
 };
 
 export type Tag = {
@@ -176,6 +177,12 @@ export type User = {
   email: Scalars['String']['output'];
 };
 
+export type UserInfo = {
+  __typename?: 'UserInfo';
+  email?: Maybe<Scalars['String']['output']>;
+  isLoggedIn: Scalars['Boolean']['output'];
+};
+
 export type UserInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -202,6 +209,20 @@ export type RemoveAdMutationVariables = Exact<{
 
 export type RemoveAdMutation = { __typename?: 'Mutation', removeAd: string };
 
+export type RegisterMutationVariables = Exact<{
+  data: UserInput;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register: string };
+
+export type LoginMutationVariables = Exact<{
+  data: UserInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: string };
+
 export type GetAllAdsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -226,12 +247,15 @@ export type GetAdByIdAndAllCategoriesAndTagsQueryVariables = Exact<{
 
 export type GetAdByIdAndAllCategoriesAndTagsQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, price: number, location: string, pictures?: Array<{ __typename?: 'Picture', url: string }> | null, category: { __typename?: 'Category', name: string }, tags?: Array<{ __typename?: 'Tag', name: string }> | null }, getAllCategories: Array<{ __typename?: 'Category', id: number, name: string }>, getAllTags: Array<{ __typename?: 'Tag', id: number, name: string }> };
 
-export type LoginQueryVariables = Exact<{
-  data: UserInput;
-}>;
+export type GetUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LoginQuery = { __typename?: 'Query', login: string };
+export type GetUserInfoQuery = { __typename?: 'Query', getUserInfo: { __typename?: 'UserInfo', email?: string | null, isLoggedIn: boolean } };
+
+export type GetAllCategoriesAndUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCategoriesAndUserInfoQuery = { __typename?: 'Query', getAllCategories: Array<{ __typename?: 'Category', id: number, name: string }>, getUserInfo: { __typename?: 'UserInfo', email?: string | null, isLoggedIn: boolean } };
 
 
 export const CreateNewAdDocument = gql`
@@ -342,6 +366,68 @@ export function useRemoveAdMutation(baseOptions?: Apollo.MutationHookOptions<Rem
 export type RemoveAdMutationHookResult = ReturnType<typeof useRemoveAdMutation>;
 export type RemoveAdMutationResult = Apollo.MutationResult<RemoveAdMutation>;
 export type RemoveAdMutationOptions = Apollo.BaseMutationOptions<RemoveAdMutation, RemoveAdMutationVariables>;
+export const RegisterDocument = gql`
+    mutation Register($data: UserInput!) {
+  register(data: $data)
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const LoginDocument = gql`
+    mutation Login($data: UserInput!) {
+  login(data: $data)
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const GetAllAdsDocument = gql`
     query GetAllAds {
   getAllAds {
@@ -564,41 +650,87 @@ export type GetAdByIdAndAllCategoriesAndTagsQueryHookResult = ReturnType<typeof 
 export type GetAdByIdAndAllCategoriesAndTagsLazyQueryHookResult = ReturnType<typeof useGetAdByIdAndAllCategoriesAndTagsLazyQuery>;
 export type GetAdByIdAndAllCategoriesAndTagsSuspenseQueryHookResult = ReturnType<typeof useGetAdByIdAndAllCategoriesAndTagsSuspenseQuery>;
 export type GetAdByIdAndAllCategoriesAndTagsQueryResult = Apollo.QueryResult<GetAdByIdAndAllCategoriesAndTagsQuery, GetAdByIdAndAllCategoriesAndTagsQueryVariables>;
-export const LoginDocument = gql`
-    query Login($data: UserInput!) {
-  login(data: $data)
+export const GetUserInfoDocument = gql`
+    query GetUserInfo {
+  getUserInfo {
+    email
+    isLoggedIn
+  }
 }
     `;
 
 /**
- * __useLoginQuery__
+ * __useGetUserInfoQuery__
  *
- * To run a query within a React component, call `useLoginQuery` and pass it any options that fit your needs.
- * When your component renders, `useLoginQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLoginQuery({
+ * const { data, loading, error } = useGetUserInfoQuery({
  *   variables: {
- *      data: // value for 'data'
  *   },
  * });
  */
-export function useLoginQuery(baseOptions: Apollo.QueryHookOptions<LoginQuery, LoginQueryVariables> & ({ variables: LoginQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetUserInfoQuery(baseOptions?: Apollo.QueryHookOptions<GetUserInfoQuery, GetUserInfoQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<LoginQuery, LoginQueryVariables>(LoginDocument, options);
+        return Apollo.useQuery<GetUserInfoQuery, GetUserInfoQueryVariables>(GetUserInfoDocument, options);
       }
-export function useLoginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LoginQuery, LoginQueryVariables>) {
+export function useGetUserInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserInfoQuery, GetUserInfoQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<LoginQuery, LoginQueryVariables>(LoginDocument, options);
+          return Apollo.useLazyQuery<GetUserInfoQuery, GetUserInfoQueryVariables>(GetUserInfoDocument, options);
         }
-export function useLoginSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<LoginQuery, LoginQueryVariables>) {
+export function useGetUserInfoSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserInfoQuery, GetUserInfoQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<LoginQuery, LoginQueryVariables>(LoginDocument, options);
+          return Apollo.useSuspenseQuery<GetUserInfoQuery, GetUserInfoQueryVariables>(GetUserInfoDocument, options);
         }
-export type LoginQueryHookResult = ReturnType<typeof useLoginQuery>;
-export type LoginLazyQueryHookResult = ReturnType<typeof useLoginLazyQuery>;
-export type LoginSuspenseQueryHookResult = ReturnType<typeof useLoginSuspenseQuery>;
-export type LoginQueryResult = Apollo.QueryResult<LoginQuery, LoginQueryVariables>;
+export type GetUserInfoQueryHookResult = ReturnType<typeof useGetUserInfoQuery>;
+export type GetUserInfoLazyQueryHookResult = ReturnType<typeof useGetUserInfoLazyQuery>;
+export type GetUserInfoSuspenseQueryHookResult = ReturnType<typeof useGetUserInfoSuspenseQuery>;
+export type GetUserInfoQueryResult = Apollo.QueryResult<GetUserInfoQuery, GetUserInfoQueryVariables>;
+export const GetAllCategoriesAndUserInfoDocument = gql`
+    query GetAllCategoriesAndUserInfo {
+  getAllCategories {
+    id
+    name
+  }
+  getUserInfo {
+    email
+    isLoggedIn
+  }
+}
+    `;
+
+/**
+ * __useGetAllCategoriesAndUserInfoQuery__
+ *
+ * To run a query within a React component, call `useGetAllCategoriesAndUserInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCategoriesAndUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCategoriesAndUserInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCategoriesAndUserInfoQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCategoriesAndUserInfoQuery, GetAllCategoriesAndUserInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCategoriesAndUserInfoQuery, GetAllCategoriesAndUserInfoQueryVariables>(GetAllCategoriesAndUserInfoDocument, options);
+      }
+export function useGetAllCategoriesAndUserInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCategoriesAndUserInfoQuery, GetAllCategoriesAndUserInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCategoriesAndUserInfoQuery, GetAllCategoriesAndUserInfoQueryVariables>(GetAllCategoriesAndUserInfoDocument, options);
+        }
+export function useGetAllCategoriesAndUserInfoSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllCategoriesAndUserInfoQuery, GetAllCategoriesAndUserInfoQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllCategoriesAndUserInfoQuery, GetAllCategoriesAndUserInfoQueryVariables>(GetAllCategoriesAndUserInfoDocument, options);
+        }
+export type GetAllCategoriesAndUserInfoQueryHookResult = ReturnType<typeof useGetAllCategoriesAndUserInfoQuery>;
+export type GetAllCategoriesAndUserInfoLazyQueryHookResult = ReturnType<typeof useGetAllCategoriesAndUserInfoLazyQuery>;
+export type GetAllCategoriesAndUserInfoSuspenseQueryHookResult = ReturnType<typeof useGetAllCategoriesAndUserInfoSuspenseQuery>;
+export type GetAllCategoriesAndUserInfoQueryResult = Apollo.QueryResult<GetAllCategoriesAndUserInfoQuery, GetAllCategoriesAndUserInfoQueryVariables>;

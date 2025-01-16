@@ -1,10 +1,13 @@
 import { toast } from "react-toastify";
-import { useLoginLazyQuery  } from "../generated/graphql-types";
+import { useLoginMutation  } from "../generated/graphql-types";
 import { SubmitHandler, useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { GET_USER_INFO } from "../graphql/queries";
 
 const Login = () => {
-   const [login] = useLoginLazyQuery();
+   const [login] = useLoginMutation({
+      refetchQueries: [{ query: GET_USER_INFO }],
+   });
    const navigate = useNavigate();
    type Inputs = {
       login: string
@@ -50,6 +53,9 @@ const Login = () => {
             </label>
 
             <button className="button" type="submit">Connexion</button>
+            <p>Pas encore de compte ?
+               <Link to="/register" className="button link-button">Inscrivez-vous</Link>
+            </p>
          </form>
       </>
    );

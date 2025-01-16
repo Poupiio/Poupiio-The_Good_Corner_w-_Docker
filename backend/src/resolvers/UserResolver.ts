@@ -48,6 +48,15 @@ class UserResolver {
          throw new Error('Incorrect login');
       }
    }
+
+   @Query(() => UserInfo)
+   async getUserInfo(@Ctx() context: any) {
+      if (context.email) {
+         return { isLoggedIn: true, email: context.email };
+      } else {
+         return { isLoggedIn: false };
+      }
+   }
 }
 
 export default UserResolver;
