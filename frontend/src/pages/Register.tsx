@@ -56,11 +56,11 @@ const Register = () => {
                <input className="text-field" type="password" {...register("password", { required: true })} />
                {errors.password && <span>Ce champ est requis.</span>}
             </label>
-
-            <button className="button" type="submit">Connexion</button>
-            <p>Vous avez déjà un compte ?
-               <Link to="/login" className="button link-button">Connectez-vous</Link>
-            </p>
+            <button className="button" type="submit">Créer</button>
+            <div className="switch-login">
+               <p>Vous avez déjà un compte ?</p>
+               <Link to="/login" className="login-button">Connectez-vous</Link>
+            </div>
          </form>
       </>
    );

@@ -51,11 +51,11 @@ const Login = () => {
                <input className="text-field" type="password" defaultValue="monmdp" {...register("password", { required: true })} />
                {errors.password && <span>Ce champ est requis.</span>}
             </label>
-
             <button className="button" type="submit">Connexion</button>
-            <p>Pas encore de compte ?
-               <Link to="/register" className="button link-button">Inscrivez-vous</Link>
-            </p>
+            <div className="switch-login">
+               <p>Pas encore de compte ?</p>
+               <Link to="/register" className="login-button">Inscrivez-vous</Link>
+            </div>
          </form>
       </>
    );

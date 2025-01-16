@@ -106,7 +106,7 @@ h1 {
 .link-button {
   text-decoration: none;
 }
- 
+
 .desktop-long-label {
   display: none;
 }
@@ -331,6 +331,22 @@ h1 {
   padding: 15px;
 }
 
+.switch-login {
+  width: fit-content;
+  margin: 2% auto;
+  text-align: center;
+}
+.switch-login p {
+  margin-bottom: 5px;
+}
+.login-button {
+  color: #FFA41B;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+.login-button:hover {
+  opacity: 0.5;
+}
 @media screen and (min-width: 720px) {
   .mobile-short-label {
     display: none;
