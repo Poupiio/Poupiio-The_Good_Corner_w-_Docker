@@ -32,7 +32,7 @@ export class AdResolver {
       return ad;
    }
 
-   @Authorized()
+   @Authorized("user")
    @Mutation(() => Ad)
    async createNewAd(@Arg("data") newData: AdInput, @Ctx() context: any) {
       console.log("context of create new ad mutation", context);
@@ -48,11 +48,15 @@ export class AdResolver {
       return adToSave;
    }
 
-   @Authorized()
+   @Authorized("user")
    @Mutation(() => String)
    async removeAd(@Arg("id") id: number) {
-      await Ad.delete(id);
-      return "The ad has been successfully deleted!";
+      const result = await Ad.delete(id);
+      if (result.affected === 1) {
+         return "Ad has been deleted.";
+      } else {
+         throw new Error("Ad has not been found.");
+      }
    }
 
    @Authorized()

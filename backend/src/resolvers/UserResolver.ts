@@ -40,7 +40,7 @@ class UserResolver {
             1. Les éléments du payload (exemple : email, role, etc)
             2. La clé secrète (stockée dans un fichier .env pour plus de sécurité)
          */
-         const token = jwt.sign({email: user.email}, process.env.JWT_SECRET_KEY as Secret);
+         const token = jwt.sign({email: user.email, userRole: user.role}, process.env.JWT_SECRET_KEY as Secret);
          // Stockage du token dans les cookies
          context.res.setHeader("Set-Cookie", `token=${token}; Secure; HttpOnly`);
          return "User logged in.";

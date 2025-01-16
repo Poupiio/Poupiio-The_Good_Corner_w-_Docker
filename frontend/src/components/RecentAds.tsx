@@ -11,7 +11,7 @@ const RecentAds = () => {
             <h2>Annonces récentes</h2>
             <section className="recent-ads">
                {data.getAllAds.map(ad => {
-                  console.log("get all ads", data.getAllAds);
+                  // console.log("get all ads", data.getAllAds);
                   
                   return (
                      <div key={ad.id}>

@@ -15,6 +15,9 @@ export class User extends BaseEntity {
    @Column()
    hashedPassword: string;
 
+   @Column({ default: "USER" })
+   role: string;
+
    @Field(() => [Ad])
    @OneToMany(() => Ad, ad => ad.user)
    ads: Ad[];
