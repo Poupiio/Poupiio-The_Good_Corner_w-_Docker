@@ -142,6 +142,13 @@ class UserResolver {
       const forgotPasswordUser = await ForgotPassword.findOneByOrFail({
          randomCode: code,
       });
+      const miliseconds = Date.now() - Date.parse(forgotPasswordUser.created_at.toUTCString());
+      const minutes = miliseconds / 1000 / 60;
+      console.log("minutes", minutes);
+      if (minutes > 5) {
+         forgotPasswordUser.remove();
+         throw Error("The link has expired");
+      }
       const user = await User.findOneByOrFail({
          email: forgotPasswordUser.email,
       });

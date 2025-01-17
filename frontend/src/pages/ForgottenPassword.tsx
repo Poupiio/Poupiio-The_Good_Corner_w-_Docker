@@ -19,7 +19,7 @@ const ForgottenPassword = () => {
    return (
       <form className="form confirmation-form" onSubmit={handleSubmit(onSubmit)}>
          <h1>Mot de passe oublié</h1>
-         <input placeholder="email" {...register("email", { required: true })} />
+         <input className="text-field" placeholder="email" {...register("email", { required: true })} />
          {errors.email && <span>Ce champ est requis !</span>}
 
          <button className="button" type="submit">Envoyer</button>

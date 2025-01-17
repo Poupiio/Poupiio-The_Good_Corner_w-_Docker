@@ -46,7 +46,7 @@ const ResetPassword = () => {
          </label>
          <label htmlFor="confirmation">Confirmez votre mot de passe
             <input className="text-field pwd" type="password" {...register("confirmation", { required: true })} />
-            {errors.password && <span>Ce champ est obligatoire !</span>}
+            {errors.confirmation && <span>Ce champ est obligatoire !</span>}
          </label>
       
          <button className="button" type="submit">Modifier</button>
