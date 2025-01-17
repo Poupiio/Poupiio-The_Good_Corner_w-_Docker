@@ -3,6 +3,7 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Category, Tag, useGetAdByIdAndAllCategoriesAndTagsQuery, useUpdateAdMutation } from "../generated/graphql-types";
 import axios from "axios";
+import { GET_ALL_ADS } from "../graphql/queries";
 
 
 type FormValues = {
@@ -24,7 +25,9 @@ const EditAd = () => {
       variables: { getAdByIdId: parseInt(id as string) }
    });
 
-   const [updateAd] = useUpdateAdMutation();
+   const [updateAd] = useUpdateAdMutation(({ 
+      refetchQueries: [GET_ALL_ADS]
+   }));
 
    const { register, handleSubmit, control, formState: { errors }, setValue, getValues, watch } = useForm<FormValues>({defaultValues: {
       title: data?.getAdById.title,
@@ -69,7 +72,7 @@ const EditAd = () => {
                data: dataForBackend
             },
          });
-         toast.success("Ad has been updated");
+         toast.success("L'annonce a bien été modifiée.");
          
          navigate("/");
       } catch (error) {
@@ -90,7 +93,7 @@ const EditAd = () => {
                   <textarea className="text-field" {...register("description")} id="description" placeholder="Description..." defaultValue={data.getAdById.description}></textarea>
                </label>
                
-               <select className="text-field" {...register("category", { required: true })} id="category" defaultValue={data.getAdById.category.name}>
+               <select className="text-field" {...register("category", { required: true })} id="category" defaultValue={data.getAdById.category.id}>
                   {data.getAllCategories.map((category: Category) => (
                      <option value={category.id} key={category.id}>{category.name}</option>
                   ))}

@@ -79,6 +79,7 @@ export const GET_AD_BY_ID_AND_CATEGORIES_AND_TAGS = gql`
          }
          location
          category {
+            id
             name
          }
          tags {
