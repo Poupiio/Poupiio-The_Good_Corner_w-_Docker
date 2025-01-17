@@ -10,7 +10,6 @@ const Register = () => {
    });
    const navigate = useNavigate();
    type Inputs = {
-      name: string,
       email: string,
       password: string
    }
@@ -20,18 +19,16 @@ const Register = () => {
       formState: { errors },
    } = useForm<Inputs>();
    const onSubmit: SubmitHandler<Inputs> = (data) => {
-      console.log("data", data);
       signUp({ 
          variables: {
             data: {
-               // name: data.name,
                email: data.email,
                password: data.password
             }
          },
          onCompleted: () => {
-            toast.success("Bienvenue !");
-            navigate("/");
+            toast.success("Vous pouvez à présent confirmer votre adresse email !");
+            navigate("/confirm");
          },
          onError: (error) => {
             console.log("error", error);
@@ -42,11 +39,6 @@ const Register = () => {
       <>
          <h1>Inscription</h1>
          <form className="form" onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="name">Votre email
-               <input className="text-field" type="text" placeholder="Angelina Polie" {...register("name", { required: true })} />
-               {errors.name && <span>Ce champ est requis.</span>}
-            </label>
-
             <label htmlFor="login">Votre email
                <input className="text-field" type="email" placeholder="monemail@gmail.com" {...register("email", { required: true })} />
                {errors.email && <span>Ce champ est requis.</span>}

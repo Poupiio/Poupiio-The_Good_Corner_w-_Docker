@@ -51,6 +51,7 @@ const start = async () => {
   
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
+    // Sert à vérifier si un utilisateur est connecté
     context: async ({ req, res }) => {
       if (req.headers.cookie) {
         const cookies = cookie.parse(req.headers.cookie as string);

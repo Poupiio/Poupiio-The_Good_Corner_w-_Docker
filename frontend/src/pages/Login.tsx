@@ -19,7 +19,6 @@ const Login = () => {
       formState: { errors },
    } = useForm<Inputs>();
    const onSubmit: SubmitHandler<Inputs> = (data) => {
-      console.log("data", data);
       login({ 
          variables: {
             data: {
@@ -41,17 +40,22 @@ const Login = () => {
       <>
          <h1>Connexion</h1>
             
-         <form className="form" onSubmit={handleSubmit(onSubmit)}>
+         <form className="form login-form" onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="login">Votre email
                <input className="text-field" type="email" placeholder="monemail@gmail.com" {...register("login", { required: true })} defaultValue="nono@gmail.com" />
                {errors.login && <span>Ce champ est requis.</span>}
             </label>
 
             <label htmlFor="password">Votre mot de passe
-               <input className="text-field" type="password" defaultValue="monmdp" {...register("password", { required: true })} />
+               <input className="text-field pwd" type="password" defaultValue="monmdp" {...register("password", { required: true })} />
                {errors.password && <span>Ce champ est requis.</span>}
             </label>
+            <div className="forgotten-pwd">
+               <Link to="/forgotten-password" className="login-button">Mot de passe oublié ?</Link>
+            </div>
+
             <button className="button" type="submit">Connexion</button>
+            
             <div className="switch-login">
                <p>Pas encore de compte ?</p>
                <Link to="/register" className="login-button">Inscrivez-vous</Link>

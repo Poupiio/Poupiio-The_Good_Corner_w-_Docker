@@ -28,6 +28,7 @@ import CreateAd from "./pages/CreateAd";
 import FileUpload from "./pages/FileUpload";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import EmailConfirmation from "./pages/EmailConfirmation";
 
 function App() {
 	return (
@@ -59,6 +60,7 @@ function App() {
 					<Route path="images" element={<FileUpload /> } />
 					<Route path="login" element={<Login /> } />
 					<Route path="register" element={<Register /> } />
+					<Route path="confirm/:code?" element={<EmailConfirmation />} />
 				</Route>
 			</Routes>
 			<ToastContainer theme="colored" />

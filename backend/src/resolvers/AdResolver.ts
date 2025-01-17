@@ -48,7 +48,7 @@ export class AdResolver {
       return adToSave;
    }
 
-   @Authorized("user")
+   @Authorized("USER")
    @Mutation(() => String)
    async removeAd(@Arg("id") id: number) {
       const result = await Ad.delete(id);

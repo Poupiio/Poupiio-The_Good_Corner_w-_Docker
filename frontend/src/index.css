@@ -312,6 +312,20 @@ h1 {
   margin-right: 10px;
 }
 
+.confirmation-form {
+  width: 50%;
+}
+.confirmation-form h1 {
+  font-size: clamp(1.4rem, 6vw, 2rem);
+}
+.confirmation-form input {
+  margin-bottom: 2%;
+}
+.confirmation-form button {
+  width: fit-content;
+  margin: 0 auto;
+}
+
 .images-container {
   margin-bottom: 15px;
 }
@@ -346,6 +360,13 @@ h1 {
 }
 .login-button:hover {
   opacity: 0.5;
+}
+.login-form .pwd {
+  margin-bottom: 0;
+}
+.forgotten-pwd {
+  width: fit-content;
+  margin-bottom: 20px;
 }
 @media screen and (min-width: 720px) {
   .mobile-short-label {
