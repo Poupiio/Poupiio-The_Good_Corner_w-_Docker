@@ -10,6 +10,7 @@ const ResetPassword = () => {
    type Inputs = {
       code: string;
       password: string;
+      confirmation: string,
    };
    const {
       register,
@@ -17,16 +18,20 @@ const ResetPassword = () => {
       formState: { errors },
    } = useForm<Inputs>();
    const onSubmit: SubmitHandler<Inputs> = (data) => {
-      changePassword({
-         variables: { code: data.code, password: data.password },
-         onCompleted: () => {
-         navigate("/");
-         toast.success("Votre mot de passe a bien été modifié.");
-         },
-         onError: () => {
-         toast.error("Error");
-         },
-      });
+      if (data.password === data.confirmation) {
+         changePassword({
+            variables: { code: data.code, password: data.password },
+            onCompleted: () => {
+            navigate("/");
+            toast.success("Votre mot de passe a bien été modifié.");
+            },
+            onError: () => {
+            toast.error("Error");
+            },
+         });
+      } else {
+         throw new Error("Les adresses email ne correspondent pas.");
+      }
    };
    return (
       <form className="form confirmation-form" onSubmit={handleSubmit(onSubmit)}>
@@ -36,7 +41,11 @@ const ResetPassword = () => {
 
          <label htmlFor="password">Votre nouveau mot de passe
             <input className="text-field pwd" type="password" {...register("password", { required: true })} />
-            {errors.password && <span>This field is required</span>}
+            {errors.password && <span>Ce champ est obligatoire !</span>}
+         </label>
+         <label htmlFor="confirmation">Confirmez votre mot de passe
+            <input className="text-field pwd" type="password" {...register("confirmation", { required: true })} />
+            {errors.password && <span>Ce champ est obligatoire !</span>}
          </label>
       
          <button className="button" type="submit">Modifier</button>
