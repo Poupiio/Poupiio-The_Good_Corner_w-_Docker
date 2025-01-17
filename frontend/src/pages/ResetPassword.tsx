@@ -30,6 +30,7 @@ const ResetPassword = () => {
             },
          });
       } else {
+         toast.error("Les mots de passe ne correspondent pas.")
          throw new Error("Les adresses email ne correspondent pas.");
       }
    };
