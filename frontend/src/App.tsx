@@ -29,6 +29,8 @@ import FileUpload from "./pages/FileUpload";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import EmailConfirmation from "./pages/EmailConfirmation";
+import ForgottenPassword from "./pages/ForgottenPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
 	return (
@@ -61,6 +63,8 @@ function App() {
 					<Route path="login" element={<Login /> } />
 					<Route path="register" element={<Register /> } />
 					<Route path="confirm/:code?" element={<EmailConfirmation />} />
+					<Route path="forgotten-password" element={<ForgottenPassword />}></Route>
+					<Route path="reset-password/:code?" element={<ResetPassword />}></Route>
 				</Route>
 			</Routes>
 			<ToastContainer theme="colored" />

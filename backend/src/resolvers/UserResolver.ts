@@ -6,6 +6,7 @@ import { User } from "../entities/User";
 import { UserInput } from "../inputs/UserInput";
 import { Resend } from "resend";
 import { TempUser } from "../entities/TempUser";
+import { ForgotPassword } from "../entities/ForgotPassword";
 
 @ObjectType()
 class UserInfo {
@@ -18,6 +19,15 @@ class UserInfo {
 
 @Resolver(User)
 class UserResolver {
+   @Query(() => UserInfo)
+   async getUserInfo(@Ctx() context: any) {
+      if (context.email) {
+         return { isLoggedIn: true, email: context.email };
+      } else {
+         return { isLoggedIn: false };
+      }
+   }
+
    @Mutation(() => String)
    async register(@Arg("data") newUserData: UserInput) {
       // On génère un code aléatoire
@@ -99,13 +109,46 @@ class UserResolver {
       return "User email confirmed with success.";
    }
 
-   @Query(() => UserInfo)
-   async getUserInfo(@Ctx() context: any) {
-      if (context.email) {
-         return { isLoggedIn: true, email: context.email };
-      } else {
-         return { isLoggedIn: false };
-      }
+   @Mutation(() => String)
+   async forgotPassword(@Arg("userEmail") userEmail: string) {
+      const user = await User.findOneByOrFail({ email: userEmail });
+      const randomCode = uuidv4();
+      await ForgotPassword.save({ email: user.email, randomCode: randomCode });
+      const resend = new Resend(process.env.RESEND_API_KEY);
+
+      (async function () {
+         const { data, error } = await resend.emails.send({
+         from: "Acme <onboarding@resend.dev>",
+            to: [user.email],
+            subject: "Change Password",
+            html: `
+               <p>Please click the link below to change your password</p>
+               <a href="http://localhost:9000/reset-password/${randomCode}">
+                  http://localhost:9000/reset-password/${randomCode}
+               </a>
+            `,
+         });
+
+         if (error) {
+            return console.error({ error });
+         }
+         console.log({ data });
+      })();
+      return "ok";
+   }
+
+   @Mutation(() => String)
+   async changePassword(@Arg("code") code: string, @Arg("password") password: string) {
+      const forgotPasswordUser = await ForgotPassword.findOneByOrFail({
+         randomCode: code,
+      });
+      const user = await User.findOneByOrFail({
+         email: forgotPasswordUser.email,
+      });
+      user.hashedPassword = await argon2.hash(password);
+      user.save();
+      forgotPasswordUser.remove();
+      return "ok";
    }
 }
 

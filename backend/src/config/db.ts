@@ -5,6 +5,7 @@ import { Tag } from "../entities/Tag";
 import { DataSource } from "typeorm";
 import { User } from "../entities/User";
 import { TempUser } from "../entities/TempUser";
+import { ForgotPassword } from "../entities/ForgotPassword";
 
 export const dataSourceGoodCorner = new DataSource({
    type: "postgres",
@@ -12,7 +13,7 @@ export const dataSourceGoodCorner = new DataSource({
    username: "postgres",
    database: "postgres",
    password: "example",
-   entities: [Ad, Category, Tag, Picture, User, TempUser],
+   entities: [Ad, Category, Tag, Picture, User, TempUser, ForgotPassword],
    synchronize: true,
    logging: ["error", "query"]
 });
